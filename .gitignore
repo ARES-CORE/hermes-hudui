@@ -47,3 +47,8 @@ ROADMAP.md
 # Build artifacts
 backend/static/assets/
 backend/static/index.html
+
+# wrangler files
+.wrangler
+.dev.vars*
+!.dev.vars.example
