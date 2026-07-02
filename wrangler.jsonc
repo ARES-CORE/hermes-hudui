@@ -1,0 +1,14 @@
+{
+  "$schema": "node_modules/wrangler/config-schema.json",
+  "name": "hermes-hudui",
+  "compatibility_date": "2026-07-02",
+  "observability": {
+    "enabled": true
+  },
+  "assets": {
+    "directory": "frontend"
+  },
+  "compatibility_flags": [
+    "nodejs_compat"
+  ]
+}
