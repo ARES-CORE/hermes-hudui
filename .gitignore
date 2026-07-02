@@ -1,0 +1,49 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.egg-info/
+*.egg
+dist/
+build/
+.eggs/
+*.whl
+.venv/
+venv/
+env/
+.venv.bak/
+
+# Node
+node_modules/
+frontend/dist/
+
+# Environment / secrets
+.env
+.env.*
+*.env
+!.env.example
+
+# OS
+.DS_Store
+Thumbs.db
+Desktop.ini
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# Hermes data (never commit agent data)
+*.db
+*.db-wal
+*.db-shm
+
+# Claude Code
+CLAUDE.md
+ROADMAP.md
+
+# Build artifacts
+backend/static/assets/
+backend/static/index.html
