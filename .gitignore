@@ -47,3 +47,6 @@ ROADMAP.md
 # Build artifacts
 backend/static/assets/
 backend/static/index.html
+
+# Paquetes offline de deploy/
+*-bundle.tar.gz
