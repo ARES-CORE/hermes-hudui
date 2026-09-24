@@ -5,7 +5,7 @@ Thanks for your interest in contributing.
 ## Development Setup
 
 ```bash
-git clone https://github.com/joeynyc/hermes-hudui.git
+git clone https://github.com/ARES-CORE/hermes-hudui.git
 cd hermes-hudui
 
 # Create and activate virtual environment
