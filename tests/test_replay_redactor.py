@@ -23,7 +23,7 @@ def _detail():
             {
                 "id": 1,
                 "role": "user",
-                "content": "Email me at person@example.com from /home/joey/project with sk-abcdefghijklmnopqrstuvwxyz",
+                "content": "Email me at person@example.com from /home/operator/project with sk-abcdefghijklmnopqrstuvwxyz",
                 "timestamp": 101,
             }
         ],

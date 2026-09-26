@@ -1,0 +1,30 @@
+[Unit]
+Description=Hermes HUD Web UI
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+Type=simple
+User=hermes
+Group=hermes
+EnvironmentFile=/etc/hermes-hudui/hermes-hudui.env
+ExecStart=/opt/hermes-hudui/venv/bin/hermes-hudui --host ${HUD_HOST} --port ${HUD_PORT}
+Restart=on-failure
+RestartSec=5
+
+# Endurecimiento
+NoNewPrivileges=true
+PrivateTmp=true
+ProtectSystem=strict
+ProtectHome=read-only
+ReadWritePaths=/home/hermes/.hermes /home/hermes/.hermes-hud
+ProtectKernelTunables=true
+ProtectKernelModules=true
+ProtectControlGroups=true
+RestrictSUIDSGID=true
+LockPersonality=true
+CapabilityBoundingSet=
+AmbientCapabilities=
+
+[Install]
+WantedBy=multi-user.target

@@ -1,0 +1,23 @@
+# Proxy inverso para hermes-hudui. Ajusta server_name y rutas de certificados.
+# Las credenciales viven SOLO en el host: crea el archivo con
+#   htpasswd -c /etc/nginx/hermes-hudui.htpasswd <usuario>
+# y nunca lo subas al repositorio.
+server {
+    listen 443 ssl;
+    server_name hud.example.internal;
+
+    ssl_certificate     /etc/ssl/private/hud.crt;
+    ssl_certificate_key /etc/ssl/private/hud.key;
+
+    auth_basic           "Hermes HUD";
+    auth_basic_user_file /etc/nginx/hermes-hudui.htpasswd;
+
+    location / {
+        proxy_pass http://127.0.0.1:3001;
+        proxy_http_version 1.1;
+        proxy_set_header Upgrade $http_upgrade;
+        proxy_set_header Connection "upgrade";
+        proxy_set_header Host $host;
+        proxy_read_timeout 3600s;
+    }
+}

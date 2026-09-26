@@ -15,7 +15,7 @@ from urllib.error import URLError
 
 from ..cache import get_cached_or_compute
 from .memory import MEMORY_MAX_CHARS, USER_MAX_CHARS
-from .utils import default_hermes_dir, safe_get
+from .utils import default_hermes_dir, load_yaml, safe_get
 from .models import ProfileInfo, ProfilesState
 
 _ALIAS_BIN_DIRS = [os.path.expanduser("~/.local/bin"), "/usr/local/bin"]
@@ -61,6 +61,11 @@ def _read_config(profile_dir: Path) -> dict:
         return {}
     try:
         text = config_path.read_text(encoding="utf-8")
+        # Real YAML first: the minimal parser drops indented list items
+        # ("  - terminal") and keeps inline comments in values.
+        data = load_yaml(text)
+        if data:
+            return data
         return _parse_yaml_simple(text)
     except Exception:
         return {}
