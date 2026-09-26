@@ -35,4 +35,16 @@ Publícalo solo detrás de nginx con TLS y autenticación
 (`nginx-hermes-hudui.conf.example`). El archivo `htpasswd` y los certificados se
 crean en el host y nunca se versionan.
 
-Opciones de instalación: `PREFIX`, `SVC_USER`, `PYTHON`.
+Opciones de instalación: `PREFIX`, `SVC_USER`, `PYTHON` y `HERMES_HOME`.
+
+### Directorio de datos personalizado
+
+Por defecto el HUD lee `~hermes/.hermes`. Para que el agente viva en un directorio
+propio (más fácil de respaldar y fuera de `/home`):
+
+```bash
+HERMES_HOME=/srv/<agente> ./install-offline.sh
+```
+
+El servicio queda con `HERMES_HOME` apuntando ahí y con permiso de escritura solo
+sobre ese directorio y `~/.hermes-hud`.

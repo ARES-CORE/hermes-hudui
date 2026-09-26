@@ -17,8 +17,10 @@ echo "→ Verificando integridad de wheels"
 
 id "$SVC_USER" &>/dev/null || useradd --system --create-home --shell /usr/sbin/nologin "$SVC_USER"
 SVC_HOME="$(getent passwd "$SVC_USER" | cut -d: -f6)"
+# Directorio de datos del agente: ~/.hermes o uno personalizado (p. ej. /srv/<agente>).
+DATA_DIR="${HERMES_HOME:-$SVC_HOME/.hermes}"
 # systemd exige que ReadWritePaths exista antes de arrancar.
-install -d -m 0750 -o "$SVC_USER" -g "$SVC_USER" "$SVC_HOME/.hermes" "$SVC_HOME/.hermes-hud"
+install -d -m 0750 -o "$SVC_USER" -g "$SVC_USER" "$DATA_DIR" "$SVC_HOME/.hermes-hud"
 
 echo "→ Instalando en $PREFIX (sin índice remoto)"
 "$PYTHON" -m venv "$PREFIX/venv"
@@ -27,11 +29,11 @@ echo "→ Instalando en $PREFIX (sin índice remoto)"
 install -d -m 0750 -o root -g "$SVC_USER" /etc/hermes-hudui
 if [ ! -f /etc/hermes-hudui/hermes-hudui.env ]; then
   install -m 0640 -o root -g "$SVC_USER" "$HERE/hermes-hudui.env.example" /etc/hermes-hudui/hermes-hudui.env
-  sed -i "s|/home/hermes|$SVC_HOME|g" /etc/hermes-hudui/hermes-hudui.env
+  sed -i "s|^HERMES_HOME=.*|HERMES_HOME=$DATA_DIR|" /etc/hermes-hudui/hermes-hudui.env
 fi
 install -m 0644 "$HERE/hermes-hudui.service" /etc/systemd/system/hermes-hudui.service
-sed -i "s|^User=.*|User=$SVC_USER|;s|^Group=.*|Group=$SVC_USER|;s|/home/hermes|$SVC_HOME|g" \
-  /etc/systemd/system/hermes-hudui.service
+sed -i "s|^User=.*|User=$SVC_USER|;s|^Group=.*|Group=$SVC_USER|" /etc/systemd/system/hermes-hudui.service
+sed -i "s|^ReadWritePaths=.*|ReadWritePaths=$DATA_DIR $SVC_HOME/.hermes-hud|" /etc/systemd/system/hermes-hudui.service
 
 systemctl daemon-reload
 systemctl enable --now hermes-hudui
