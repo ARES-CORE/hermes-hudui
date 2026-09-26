@@ -2,6 +2,8 @@
 # Instala hermes-hudui desde el paquete offline (sin internet).
 # Ejecutar como root dentro del CT/VM destino, desde el directorio extraído.
 set -euo pipefail
+# El venv lo ejecuta el usuario del servicio: no heredar un umask restrictivo del llamador.
+umask 022
 
 PREFIX="${PREFIX:-/opt/hermes-hudui}"
 SVC_USER="${SVC_USER:-hermes}"
@@ -15,7 +17,8 @@ HERE="$(cd "$(dirname "$0")" && pwd)"
 echo "→ Verificando integridad de wheels"
 ( cd "$HERE/wheels" && sha256sum -c --quiet ../SHA256SUMS )
 
-id "$SVC_USER" &>/dev/null || useradd --system --create-home --shell /usr/sbin/nologin "$SVC_USER"
+id "$SVC_USER" &>/dev/null || useradd --system --create-home --shell /usr/sbin/nologin \
+  $(getent group "$SVC_USER" >/dev/null && echo "-g $SVC_USER") "$SVC_USER"
 SVC_HOME="$(getent passwd "$SVC_USER" | cut -d: -f6)"
 # Directorio de datos del agente: ~/.hermes o uno personalizado (p. ej. /srv/<agente>).
 DATA_DIR="${HERMES_HOME:-$SVC_HOME/.hermes}"
