@@ -28,6 +28,16 @@ Resultado:
 - `/etc/hermes-hudui/hermes-hudui.env` — configuración (sin secretos)
 - `hermes-hudui.service` — systemd endurecido, usuario sin privilegios `hermes`
 
+## Sin salidas a externos
+
+Dos capas, activas por defecto:
+
+- `HERMES_HUD_OFFLINE=1` (en el `.env` del servicio): la API responde 403 a las
+  acciones que abrirían conexiones externas (actualizar hermes, instalar/actualizar
+  plugins, gateway, chat y cron contra proveedores LLM).
+- systemd `IPAddressDeny=any` + `IPAddressAllow=localhost`: el kernel bloquea
+  cualquier conexión del servicio (y de sus procesos hijos) fuera de localhost.
+
 ## 3. Publicar
 
 El HUD **no tiene autenticación propia** y escucha en `127.0.0.1:3001`.

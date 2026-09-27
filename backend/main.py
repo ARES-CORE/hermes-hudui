@@ -45,6 +45,7 @@ from .api import (
     replay,
 )
 from .file_watcher import start_watcher, stop_watcher
+from .offline import OfflineMiddleware
 from .websocket_manager import ws_manager
 
 logger = logging.getLogger(__name__)
@@ -72,6 +73,8 @@ app = FastAPI(
     version="0.1.0",
     lifespan=lifespan,
 )
+
+app.add_middleware(OfflineMiddleware)
 
 app.add_middleware(
     CORSMiddleware,

@@ -23,6 +23,11 @@ ProtectKernelModules=true
 ProtectControlGroups=true
 RestrictSUIDSGID=true
 LockPersonality=true
+
+# Sin salidas a hosts externos: el panel solo habla con localhost (nginx delante).
+# Se hereda por los procesos hijos (hermes, git, pip), así que tampoco pueden salir.
+IPAddressDeny=any
+IPAddressAllow=localhost
 CapabilityBoundingSet=
 AmbientCapabilities=
 
